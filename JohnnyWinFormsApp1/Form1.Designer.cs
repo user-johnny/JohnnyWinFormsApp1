@@ -43,19 +43,28 @@
             ListBox1 = new ListBox();
             btToL = new Button();
             btToR = new Button();
+            tabPage3 = new TabPage();
+            buttonEdit = new Button();
+            buttonNew = new Button();
+            buttonDel = new Button();
+            button1 = new Button();
+            dataGridView1 = new DataGridView();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Location = new Point(2, 1);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(796, 452);
+            tabControl1.Size = new Size(1099, 592);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -71,7 +80,7 @@
             tabPage1.Location = new Point(4, 28);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(788, 420);
+            tabPage1.Size = new Size(1091, 560);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "BMI計算";
             tabPage1.UseVisualStyleBackColor = true;
@@ -165,7 +174,7 @@
             tabPage2.Location = new Point(4, 28);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(788, 420);
+            tabPage2.Size = new Size(1091, 560);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "陣列";
             tabPage2.UseVisualStyleBackColor = true;
@@ -210,11 +219,75 @@
             btToR.UseVisualStyleBackColor = true;
             btToR.Click += ToAction;
             // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(buttonEdit);
+            tabPage3.Controls.Add(buttonNew);
+            tabPage3.Controls.Add(buttonDel);
+            tabPage3.Controls.Add(button1);
+            tabPage3.Controls.Add(dataGridView1);
+            tabPage3.Location = new Point(4, 28);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Size = new Size(1091, 560);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "Sql";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // buttonEdit
+            // 
+            buttonEdit.Location = new Point(234, 38);
+            buttonEdit.Name = "buttonEdit";
+            buttonEdit.Size = new Size(94, 29);
+            buttonEdit.TabIndex = 13;
+            buttonEdit.Text = "編輯";
+            buttonEdit.UseVisualStyleBackColor = true;
+            buttonEdit.Click += buttonEdit_Click;
+            // 
+            // buttonNew
+            // 
+            buttonNew.Location = new Point(34, 38);
+            buttonNew.Name = "buttonNew";
+            buttonNew.Size = new Size(94, 29);
+            buttonNew.TabIndex = 12;
+            buttonNew.Text = "新增";
+            buttonNew.UseVisualStyleBackColor = true;
+            buttonNew.Click += buttonNew_Click;
+            // 
+            // buttonDel
+            // 
+            buttonDel.Location = new Point(134, 38);
+            buttonDel.Name = "buttonDel";
+            buttonDel.Size = new Size(94, 29);
+            buttonDel.TabIndex = 11;
+            buttonDel.Text = "刪除";
+            buttonDel.UseVisualStyleBackColor = true;
+            buttonDel.Click += buttonDel_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(334, 38);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 10;
+            button1.Text = "查詢";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(27, 121);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.Size = new Size(1044, 314);
+            dataGridView1.TabIndex = 9;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1103, 599);
             Controls.Add(tabControl1);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -223,6 +296,8 @@
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
@@ -243,5 +318,11 @@
         private Button btToR;
         private ListBox ListBox2;
         private ListBox ListBox1;
+        private TabPage tabPage3;
+        private DataGridView dataGridView1;
+        private Button button1;
+        private Button buttonDel;
+        private Button buttonNew;
+        private Button buttonEdit;
     }
 }
