@@ -9,6 +9,8 @@ namespace JohnnyWinFormsApp1
     {
         string SqlStr = @"server=192.168.1.9;database=master;uid=SYSADM;pwd=SYSADM";
         List<Items> items = new List<Items>();
+        List<Items> _items = new List<Items>();
+        bool Orderby = false;
         public Form1()
         {
             InitializeComponent();
@@ -22,6 +24,12 @@ namespace JohnnyWinFormsApp1
             AddList(stringList2, "ListBox2");
 
             this.Activated += new EventHandler(this.Form1_Activated);
+
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.EnableHeadersVisualStyles = false;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.LightSkyBlue;
             //this.Deactivate += new EventHandler(this.Form1_Deactivate);
             // set so whole row is selected 讓整行被選取
             //dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -121,13 +129,15 @@ namespace JohnnyWinFormsApp1
             conn.Open();
             items = conn.Query<Items>("Select * From Items").ToList();
             dataGridView1.DataSource = items;
+            _items = items; 
             dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Query();
+            //Query();
+            dataGridView1.DataSource = _items.Where(x => x.Name.Contains(textBoxSerch.Text) || x.Description.Contains(textBoxSerch.Text) || x.Type.Contains(textBoxSerch.Text) || x.LastUpdated.Contains(textBoxSerch.Text)).ToList();
         }
 
         private void buttonDel_Click(object sender, EventArgs e)
@@ -159,7 +169,7 @@ namespace JohnnyWinFormsApp1
         private void buttonNew_Click(object sender, EventArgs e)
         {
             Items item = new Items();
-            FormEdit formEdit = new FormEdit("New",item,SqlStr);
+            FormEdit formEdit = new FormEdit("New", item, SqlStr);
             formEdit.ShowDialog();
         }
 
@@ -185,8 +195,36 @@ namespace JohnnyWinFormsApp1
                 MessageBox.Show("請選擇一個員工");
                 return;
             }
-            FormEdit formUpdate = new FormEdit("Edit",item,SqlStr);
+            FormEdit formUpdate = new FormEdit("Edit", item, SqlStr);
             formUpdate.ShowDialog();
+        }
+
+        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            string columnName = dataGridView1.Columns[e.ColumnIndex].Name;
+            if (columnName != null)
+            {
+                int index = e.ColumnIndex;
+
+                if (index == 0 || index == 3 || index == 4)
+                {
+                    //轉成數字排序
+                    _items = _items.OrderBy(x => double.Parse(x.GetType().GetProperty(columnName).GetValue(x, null).ToString())).ToList();
+                }
+                else
+                {
+                    _items = _items.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null).ToString()).ToList();
+                }
+
+                if (Orderby)
+                {
+                    _items.Reverse();
+                }
+
+                Orderby = !Orderby;
+
+                dataGridView1.DataSource = _items;
+            }
         }
     }
 }

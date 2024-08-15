@@ -44,15 +44,20 @@
             btToL = new Button();
             btToR = new Button();
             tabPage3 = new TabPage();
-            buttonEdit = new Button();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel1 = new Panel();
+            textBoxSerch = new TextBox();
             buttonNew = new Button();
-            buttonDel = new Button();
+            buttonEdit = new Button();
             button1 = new Button();
+            buttonDel = new Button();
             dataGridView1 = new DataGridView();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             tabPage3.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -61,10 +66,11 @@
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Location = new Point(2, 1);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1099, 592);
+            tabControl1.Size = new Size(1278, 727);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -80,7 +86,7 @@
             tabPage1.Location = new Point(4, 28);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1091, 560);
+            tabPage1.Size = new Size(1270, 695);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "BMI計算";
             tabPage1.UseVisualStyleBackColor = true;
@@ -174,7 +180,7 @@
             tabPage2.Location = new Point(4, 28);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1091, 560);
+            tabPage2.Size = new Size(1270, 695);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "陣列";
             tabPage2.UseVisualStyleBackColor = true;
@@ -221,31 +227,51 @@
             // 
             // tabPage3
             // 
-            tabPage3.Controls.Add(buttonEdit);
-            tabPage3.Controls.Add(buttonNew);
-            tabPage3.Controls.Add(buttonDel);
-            tabPage3.Controls.Add(button1);
-            tabPage3.Controls.Add(dataGridView1);
+            tabPage3.Controls.Add(tableLayoutPanel1);
             tabPage3.Location = new Point(4, 28);
             tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(1091, 560);
+            tabPage3.Size = new Size(1270, 695);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Sql";
             tabPage3.UseVisualStyleBackColor = true;
             // 
-            // buttonEdit
+            // tableLayoutPanel1
             // 
-            buttonEdit.Location = new Point(234, 38);
-            buttonEdit.Name = "buttonEdit";
-            buttonEdit.Size = new Size(94, 29);
-            buttonEdit.TabIndex = 13;
-            buttonEdit.Text = "編輯";
-            buttonEdit.UseVisualStyleBackColor = true;
-            buttonEdit.Click += buttonEdit_Click;
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(panel1, 0, 0);
+            tableLayoutPanel1.Controls.Add(dataGridView1, 0, 1);
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 56F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new Size(1270, 695);
+            tableLayoutPanel1.TabIndex = 14;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(textBoxSerch);
+            panel1.Controls.Add(buttonNew);
+            panel1.Controls.Add(buttonEdit);
+            panel1.Controls.Add(button1);
+            panel1.Controls.Add(buttonDel);
+            panel1.Location = new Point(3, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(790, 48);
+            panel1.TabIndex = 10;
+            // 
+            // textBoxSerch
+            // 
+            textBoxSerch.Location = new Point(402, 13);
+            textBoxSerch.Name = "textBoxSerch";
+            textBoxSerch.Size = new Size(380, 27);
+            textBoxSerch.TabIndex = 14;
             // 
             // buttonNew
             // 
-            buttonNew.Location = new Point(34, 38);
+            buttonNew.Location = new Point(3, 10);
             buttonNew.Name = "buttonNew";
             buttonNew.Size = new Size(94, 29);
             buttonNew.TabIndex = 12;
@@ -253,19 +279,19 @@
             buttonNew.UseVisualStyleBackColor = true;
             buttonNew.Click += buttonNew_Click;
             // 
-            // buttonDel
+            // buttonEdit
             // 
-            buttonDel.Location = new Point(134, 38);
-            buttonDel.Name = "buttonDel";
-            buttonDel.Size = new Size(94, 29);
-            buttonDel.TabIndex = 11;
-            buttonDel.Text = "刪除";
-            buttonDel.UseVisualStyleBackColor = true;
-            buttonDel.Click += buttonDel_Click;
+            buttonEdit.Location = new Point(203, 10);
+            buttonEdit.Name = "buttonEdit";
+            buttonEdit.Size = new Size(94, 29);
+            buttonEdit.TabIndex = 13;
+            buttonEdit.Text = "編輯";
+            buttonEdit.UseVisualStyleBackColor = true;
+            buttonEdit.Click += buttonEdit_Click;
             // 
             // button1
             // 
-            button1.Location = new Point(334, 38);
+            button1.Location = new Point(303, 10);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 10;
@@ -273,21 +299,33 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // buttonDel
+            // 
+            buttonDel.Location = new Point(103, 10);
+            buttonDel.Name = "buttonDel";
+            buttonDel.Size = new Size(94, 29);
+            buttonDel.TabIndex = 11;
+            buttonDel.Text = "刪除";
+            buttonDel.UseVisualStyleBackColor = true;
+            buttonDel.Click += buttonDel_Click;
+            // 
             // dataGridView1
             // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(27, 121);
+            dataGridView1.Location = new Point(3, 59);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1044, 314);
+            dataGridView1.Size = new Size(1264, 633);
             dataGridView1.TabIndex = 9;
+            dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1103, 599);
+            ClientSize = new Size(1278, 727);
             Controls.Add(tabControl1);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -297,6 +335,9 @@
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
@@ -324,5 +365,8 @@
         private Button buttonDel;
         private Button buttonNew;
         private Button buttonEdit;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel1;
+        private TextBox textBoxSerch;
     }
 }
