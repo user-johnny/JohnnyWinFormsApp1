@@ -37,7 +37,6 @@ namespace JohnnyWinFormsApp1
                 lines.Add("Name,Type,MarketValue,Quantity,Description");
                 foreach (var item in items)
                 {
-                    //File.AppendAllText(file, $"{item.Name},{item.Type},{item.MarketValue},{item.Quantity},{item.Description}\n", Encoding.Default);
                     string line = $"{item.Name},{item.Type},{item.MarketValue},{item.Quantity},{item.Description}";
                     lines.Add(line);
                     File.WriteAllLines(file, lines,Encoding.ASCII);
