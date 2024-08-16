@@ -30,6 +30,7 @@ namespace JohnnyWinFormsApp1
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            dataGridView1.Font = new System.Drawing.Font("微軟正黑體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             //this.Deactivate += new EventHandler(this.Form1_Deactivate);
             // set so whole row is selected 讓整行被選取
             //dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
