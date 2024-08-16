@@ -52,6 +52,8 @@
             button1 = new Button();
             buttonDel = new Button();
             dataGridView1 = new DataGridView();
+            buttonRedFile = new Button();
+            buttonExport = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -252,19 +254,22 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(buttonExport);
+            panel1.Controls.Add(buttonRedFile);
             panel1.Controls.Add(textBoxSerch);
             panel1.Controls.Add(buttonNew);
             panel1.Controls.Add(buttonEdit);
             panel1.Controls.Add(button1);
             panel1.Controls.Add(buttonDel);
+            panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(790, 48);
+            panel1.Size = new Size(1264, 50);
             panel1.TabIndex = 10;
             // 
             // textBoxSerch
             // 
-            textBoxSerch.Location = new Point(402, 13);
+            textBoxSerch.Location = new Point(603, 13);
             textBoxSerch.Name = "textBoxSerch";
             textBoxSerch.Size = new Size(380, 27);
             textBoxSerch.TabIndex = 14;
@@ -291,7 +296,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(303, 10);
+            button1.Location = new Point(504, 10);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 10;
@@ -321,6 +326,26 @@
             dataGridView1.TabIndex = 9;
             dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
             // 
+            // buttonRedFile
+            // 
+            buttonRedFile.Location = new Point(306, 10);
+            buttonRedFile.Name = "buttonRedFile";
+            buttonRedFile.Size = new Size(94, 29);
+            buttonRedFile.TabIndex = 15;
+            buttonRedFile.Text = "匯入";
+            buttonRedFile.UseVisualStyleBackColor = true;
+            buttonRedFile.Click += buttonRedFile_Click;
+            // 
+            // buttonExport
+            // 
+            buttonExport.Location = new Point(404, 11);
+            buttonExport.Name = "buttonExport";
+            buttonExport.Size = new Size(94, 29);
+            buttonExport.TabIndex = 16;
+            buttonExport.Text = "轉出";
+            buttonExport.UseVisualStyleBackColor = true;
+            buttonExport.Click += buttonExport_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
@@ -330,6 +355,7 @@
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
+            WindowState = FormWindowState.Maximized;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
@@ -368,5 +394,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Panel panel1;
         private TextBox textBoxSerch;
+        private Button buttonExport;
+        private Button buttonRedFile;
     }
 }

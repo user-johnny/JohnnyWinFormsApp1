@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Text;
 using System.Windows.Forms.VisualStyles;
 
 namespace JohnnyWinFormsApp1
@@ -11,6 +12,7 @@ namespace JohnnyWinFormsApp1
         List<Items> items = new List<Items>();
         List<Items> _items = new List<Items>();
         bool Orderby = false;
+        int n = 0;
         public Form1()
         {
             InitializeComponent();
@@ -38,12 +40,16 @@ namespace JohnnyWinFormsApp1
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            Query();
+            if (n == 0)
+            {
+                n = 1;
+                Query();
+            }
         }
 
         private void Form1_Deactivate(object sender, EventArgs e)
         {
-            Query();
+            //Query();
         }
 
         private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -130,7 +136,7 @@ namespace JohnnyWinFormsApp1
             conn.Open();
             items = conn.Query<Items>("Select * From Items").ToList();
             dataGridView1.DataSource = items;
-            _items = items; 
+            _items = items;
             dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
         }
@@ -152,7 +158,6 @@ namespace JohnnyWinFormsApp1
                 return;
             }
             string name = dataGridView1.SelectedRows[0].Cells["Name"].Value.ToString();
-            string id = dataGridView1.SelectedRows[0].Cells["ID"].Value.ToString();
             // 跳訊息確定是否要刪除
             var result = MessageBox.Show(@"確定要刪除 '" + name + @"' 嗎?", "刪除", MessageBoxButtons.YesNo);
             // 如果選NO就結束
@@ -160,8 +165,13 @@ namespace JohnnyWinFormsApp1
             {
                 return;
             }
+            //get SelectedRows
             SqlConnection conn = new SqlConnection(SqlStr);
-            conn.Execute("Delete From Items Where ID = @id", new { id });
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                string id = row.Cells["ID"].Value.ToString();
+                conn.Execute("Delete From Items Where ID = @id", new { id });
+            }
             Query();
             MessageBox.Show("刪除成功");
             conn.Close();
@@ -226,6 +236,68 @@ namespace JohnnyWinFormsApp1
 
                 dataGridView1.DataSource = _items;
             }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            var result = saveFileDialog.ShowDialog();
+            List<string> lines = new List<string>();
+            if (result == DialogResult.OK)
+            {
+                //MessageBox.Show("Save file to " + saveFileDialog.FileName);
+                string file = saveFileDialog.FileName;
+                lines.Add("Name,Type,MarketValue,Quantity,Description");
+                foreach (var item in items)
+                {
+                    string line = $"{item.Name},{item.Type},{item.MarketValue},{item.Quantity},{item.Description}";
+                    lines.Add(line);
+                    File.WriteAllLines(file, lines, Encoding.Default);
+                }
+
+            }
+        }
+
+        private void buttonRedFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV files (*.csv)|*.csv";
+            var result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                var file = openFileDialog.FileName;
+                string[] fitems = File.ReadAllLines(file, Encoding.Default);
+
+                string LastUpdated = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                // 存檔
+                SqlConnection conn = new SqlConnection(SqlStr);
+                conn.Open();
+
+                for (var i = 1; i < fitems.Length; i++)
+                {
+                    var data = fitems[i].Split(','); 
+                    string Name = data[0];
+                    string Type = data[1];
+                    string MarketValue = data[2];
+                    string Quantity = data[3];
+                    string Description = data[4]; 
+
+                    string Sqlstr = @"Insert into Items(Name,Description,MarketValue,Quantity,Type,LastUpdated)
+                               Values(@Name,@Description,@MarketValue,@Quantity,@Type,@LastUpdated)";
+
+                    conn.Execute(Sqlstr,
+                        new { Name, Description, MarketValue, Quantity, Type,  LastUpdated }
+                        );
+
+                }
+                conn.Close();
+            }
+            Query();
+
+            // 重置 DataSource
+            //dataGridView1.DataSource = null;
+            //dataGridView1.DataSource = _items;
+            //dataGridView1.Refresh(); // 刷新控件
         }
     }
 }
