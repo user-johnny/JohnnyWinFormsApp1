@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +14,17 @@ using System.Windows.Forms.Design;
 
 namespace JohnnyWinFormsApp1
 {
+
     public partial class FormInternet : Form
     {
 
         List<StockData> stockDatas = new List<StockData>();
-        List<School> schoolDatas = new List<School>();  
+        List<School> schoolDatas = new List<School>();
         public FormInternet()
         {
             InitializeComponent();
             textBoxURL.Text = @"https://stats.moe.gov.tw/files/detail/112/112_ab111_S.csv";
+
         }
 
         private void btDownload_Click(object sender, EventArgs e)
@@ -67,13 +70,13 @@ namespace JohnnyWinFormsApp1
         public string ConvertNumber(string source)
         {
             string result = "";
-            if(source == "")
+            if (source == "")
             {
                 result = "0";
             }
             else
             {
-               
+
             }
 
             return result;
@@ -81,7 +84,7 @@ namespace JohnnyWinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using(var workbook = new XLWorkbook())
+            using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("School");
                 worksheet.Cell("A1").Value = "學年度";
@@ -114,6 +117,27 @@ namespace JohnnyWinFormsApp1
                     worksheet.Cell(i + 2, 12).Value = schoolDatas[i].S8;
                     worksheet.Cell(i + 2, 13).Value = schoolDatas[i].S9;
                 }
+
+                //排序schoolDatas by S1
+                List<School> schoolData2 = schoolDatas.Where(x => x.S1 > 0).OrderByDescending(x => x.S1).ToList();
+
+                var worksheet2 = workbook.Worksheets.Add("學位生_正式修讀學位外國生");
+                worksheet2.Cell("A1").Value = "學年度";
+                worksheet2.Cell("B1").Value = "學校類別";
+                worksheet2.Cell("C1").Value = "學校代碼";
+                worksheet2.Cell("D1").Value = "學校名稱";
+                worksheet2.Cell("E1").Value = "人數";
+                //schoolDatas的資料寫入到Excel
+                for (int i = 0; i < schoolData2.Count; i++)
+                {
+                    worksheet2.Cell(i + 2, 1).Value = schoolData2[i].Year;
+                    worksheet2.Cell(i + 2, 2).Value = schoolData2[i].SchoolType;
+                    worksheet2.Cell(i + 2, 3).Value = schoolData2[i].SchoolID;
+                    worksheet2.Cell(i + 2, 4).Value = schoolData2[i].SchoolName;
+                    worksheet2.Cell(i + 2, 5).Value = schoolData2[i].S1;
+                }
+
+
                 string FileName = @"d:\School.xlsx";
                 //刪除舊檔案
                 if (File.Exists(FileName))
