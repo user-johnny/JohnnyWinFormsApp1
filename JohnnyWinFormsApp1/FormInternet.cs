@@ -1,5 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.ExtendedProperties;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +13,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.VisualElements;
+using LiveChartsCore.SkiaSharpView.VisualElements;
+using SkiaSharp;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
 
 namespace JohnnyWinFormsApp1
 {
@@ -64,6 +71,130 @@ namespace JohnnyWinFormsApp1
 
                 }
                 dataGridView1.DataSource = schoolDatas;
+
+                //schoolDatas Select SchoolName 並合計 S1 S2 S3 S4 S5 S6 S7 S8 S9
+                var ChartList = schoolDatas
+                    .Take(6)
+                    .GroupBy(Select => Select.SchoolName)
+                    .Select(g => new
+                    {
+                        SchoolName = g.Key,
+                        student = g.Sum(p => p.S1+p.S2 + p.S3 + p.S4 + p.S5 + p.S6 + p.S7 + p.S8 + p.S9) 
+                    })
+                    .OrderByDescending(x => x.student)
+                    .ToList();
+
+                // 顯示折線圖
+                cartesianChart1.Series = new ISeries[]
+                {
+                    new LineSeries<int>
+                    {
+                        Values = ChartList.Select(x => x.student).ToList()
+                    },
+                 };
+                cartesianChart1.Title = new LabelVisual
+                {
+                    Text = "外藉學生人數",
+                    TextSize = 20,
+                    Padding = new LiveChartsCore.Drawing.Padding(15),
+                    Paint = new SolidColorPaint(SKColors.DarkSlateGray)
+                };
+
+                // 設定X軸的資訊
+                cartesianChart1.XAxes =
+                [
+                    new Axis
+                    {
+                        //設定X軸的標籤，使用Select選取區域名稱，最後用ToList()轉成陣列
+                        Labels = ChartList.Select(t => t.SchoolName).ToList(),
+                        Name = "學校名稱",
+                        NamePaint = new SolidColorPaint(SKColors.Black),
+                        LabelsPaint = new SolidColorPaint(SKColors.Blue),
+                        TextSize = 16,
+                        SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray) { StrokeThickness = 2 }
+                    }
+                ];
+                // 設定Y軸的資訊
+                cartesianChart1.YAxes =
+                [
+                    new Axis
+                    {
+                        Name = "人數",
+                        NamePaint = new SolidColorPaint(SKColors.Red),
+                        LabelsPaint = new SolidColorPaint(SKColors.Green),
+                        TextSize = 20,
+                        SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
+                        {
+                            StrokeThickness = 2,
+                            PathEffect = new DashEffect([3, 3])
+                        }
+                    }
+                ];
+
+
+
+                // 顯示直條圖
+                cartesianChart2.Series =
+                [
+                    new ColumnSeries<int>
+                    {
+                        Values = ChartList.Select(x => x.student).ToList(), 
+                    }
+                ];
+
+                // 設定X軸的資訊
+                cartesianChart2.XAxes =
+                [
+                    new Axis
+                    {
+                        //設定X軸的標籤，使用Select選取區域名稱，最後用ToList()轉成陣列
+                        Labels = ChartList.Select(t => t.SchoolName).ToList(),
+                        Name = "學校名稱",
+                        NamePaint = new SolidColorPaint(SKColors.Black),
+                        LabelsPaint = new SolidColorPaint(SKColors.Blue),
+                        TextSize = 16,
+                        SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray) { StrokeThickness = 2 },
+                        LabelsRotation = 45 // 旋轉45度，才不會太擠
+                    }
+                ];
+                // 設定Y軸的資訊
+                cartesianChart2.YAxes =
+                [
+                    new Axis
+                    {
+                        Name = "人數",
+                        NamePaint = new SolidColorPaint(SKColors.Red),
+                        LabelsPaint = new SolidColorPaint(SKColors.Green),
+                        TextSize = 20,
+                        SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
+                        {
+                            StrokeThickness = 2,
+                            PathEffect = new DashEffect([3, 3])
+                        }
+                    }
+                ];
+
+                // 顯示圓餅圖
+                pieChart1.Series = ChartList
+                    .OrderByDescending(t => t.student)
+                    .Select(t => new PieSeries<int>
+                    {
+                        Values = new List<int> { t.student },
+                        Name = t.SchoolName,
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 20,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                        DataLabelsFormatter = p => t.SchoolName + ": " + t.student
+                    })
+                    .ToList();
+                // 設定圖表上方的標題
+                pieChart1.Title = new LabelVisual
+                {
+                    Text = "圓餅圖",
+                    TextSize = 20,
+                    Padding = new LiveChartsCore.Drawing.Padding(15),
+                    Paint = new SolidColorPaint(SKColors.DarkSlateGray)
+                };
 
             }
         }
