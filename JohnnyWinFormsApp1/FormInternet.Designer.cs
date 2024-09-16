@@ -41,6 +41,7 @@
             cartesianChart2 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             tabPage4 = new TabPage();
             pieChart1 = new LiveChartsCore.SkiaSharpView.WinForms.PieChart();
+            buttonPDF = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -181,11 +182,23 @@
             pieChart1.TabIndex = 0;
             pieChart1.Total = null;
             // 
+            // buttonPDF
+            // 
+            buttonPDF.Font = new Font("Microsoft JhengHei UI", 16F);
+            buttonPDF.Location = new Point(322, 64);
+            buttonPDF.Name = "buttonPDF";
+            buttonPDF.Size = new Size(105, 41);
+            buttonPDF.TabIndex = 6;
+            buttonPDF.Text = "PDF";
+            buttonPDF.UseVisualStyleBackColor = true;
+            buttonPDF.Click += buttonPDF_Click;
+            // 
             // FormInternet
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1036, 861);
+            Controls.Add(buttonPDF);
             Controls.Add(tabControl1);
             Controls.Add(button1);
             Controls.Add(listBox1);
@@ -219,5 +232,6 @@
         private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart2;
         private TabPage tabPage4;
         private LiveChartsCore.SkiaSharpView.WinForms.PieChart pieChart1;
+        private Button buttonPDF;
     }
 }

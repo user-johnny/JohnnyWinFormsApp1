@@ -18,6 +18,8 @@ using LiveChartsCore.VisualElements;
 using LiveChartsCore.SkiaSharpView.VisualElements;
 using SkiaSharp;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 
 namespace JohnnyWinFormsApp1
 {
@@ -79,7 +81,7 @@ namespace JohnnyWinFormsApp1
                     .Select(g => new
                     {
                         SchoolName = g.Key,
-                        student = g.Sum(p => p.S1+p.S2 + p.S3 + p.S4 + p.S5 + p.S6 + p.S7 + p.S8 + p.S9) 
+                        student = g.Sum(p => p.S1 + p.S2 + p.S3 + p.S4 + p.S5 + p.S6 + p.S7 + p.S8 + p.S9)
                     })
                     .OrderByDescending(x => x.student)
                     .ToList();
@@ -138,7 +140,7 @@ namespace JohnnyWinFormsApp1
                 [
                     new ColumnSeries<int>
                     {
-                        Values = ChartList.Select(x => x.student).ToList(), 
+                        Values = ChartList.Select(x => x.student).ToList(),
                     }
                 ];
 
@@ -286,6 +288,98 @@ namespace JohnnyWinFormsApp1
                 Process.Start(psi);
 
             }
+        }
+
+        private void buttonPDF_Click(object sender, EventArgs e)
+        {
+
+
+            string OutFile = "d:\\output.pdf";
+            string Font = "Microsoft JhengHei";
+
+            Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    //
+                    page.Header().
+                    Background(Colors.Green.Accent1).
+                    AlignCenter().
+                    Padding(1).Table(table =>
+                    {
+                        table.ColumnsDefinition(columns =>
+                        {
+                            columns.RelativeColumn(1);
+                            columns.RelativeColumn(1);
+                            columns.RelativeColumn(1);
+                        });
+
+                        table.Cell().Text("");
+                        table.Cell().AlignCenter().Text("報表").FontFamily(Font).FontSize(20);
+                        table.Cell().AlignRight().Text("Date: " + DateTime.Now.ToString("yyyy/MM/dd"));
+
+
+                        table.Cell().Text("");
+                        table.Cell().Text("");
+                        table.Cell().AlignRight().Text(text =>
+                        {
+                            text.CurrentPageNumber();
+                            text.Span(" / ");
+                            text.TotalPages();
+                        });
+
+                    });
+                    page.Content().
+                    Background(Colors.Blue.Medium).
+                    AlignCenter().
+                    Padding(16).Table(table =>
+                    {
+                        table.ColumnsDefinition(columns =>
+                        {
+                            //columns.ConstantColumn(1);
+                            columns.RelativeColumn(1);
+                            columns.RelativeColumn(1);
+                            columns.RelativeColumn(1);
+                        });
+                        table.Header(headers =>
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                table.Cell().BorderBottom(1).AlignCenter().Text($"Header {i}");
+                            }
+                        });
+                        for (int i = 0; i < 200; i++)
+                        {
+                            table.Cell().BorderBottom(1).AlignCenter().BorderColor(Colors.Grey.Lighten2).Text($"Item {i}");
+                        }
+                    });
+                    //page.Content().
+                    //Background(Colors.Blue.Medium).
+                    //AlignCenter().
+                    //Text("內容").
+                    //FontFamily(Font).
+                    //FontSize(20);
+                    //
+                    page.Footer()
+                .Background(Colors.Purple.Lighten3)
+                .AlignCenter()
+                .PaddingVertical(20)
+                .Text("表尾")
+                .FontFamily(Font);
+
+                });
+
+            })
+            .GeneratePdf(OutFile);
+
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = OutFile,
+                UseShellExecute = true
+            });
+
+
+
         }
     }
 }
